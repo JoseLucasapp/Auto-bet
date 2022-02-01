@@ -1,0 +1,22 @@
+{
+  "name": "Auto-bet",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/JoseLucasapp/Auto-bet.git",
+  "author": "José Lucas <josluc2016@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./app.js",
+    "dev": "nodemon ./app.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^14.3.2",
+    "express": "^4.17.2",
+    "puppeteer": "^13.1.2",
+    "puppeteer-core": "^13.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}

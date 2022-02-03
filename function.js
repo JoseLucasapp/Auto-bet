@@ -1,50 +1,14 @@
 const puppeteer = require('puppeteer');
+const numberClicks = require('./numberClicks');
+const totalFieldFunc = require('./totalField');
 
 module.exports = async (data) => {
-    const numbers = ((data.numbers).split(' ')).map((n) => parseInt(n))
+    const numbers = (data.numbers).split(' ')
     const player = data.player
     const total = parseInt(data.total)
     const value = data.value
     const date = data.date
-    let totalField = 0
-
-    //j_idt81:campoQtd:9
-
-    switch (total) {
-        case 14:
-            totalField = 0
-            break;
-        case 15:
-            totalField = 1
-            break;
-        case 16:
-            totalField = 2
-            break;
-        case 17:
-            totalField = 3
-            break;
-        case 18:
-            totalField = 4
-            break;
-        case 20:
-            totalField = 5
-            break;
-        case 25:
-            totalField = 6
-            break;
-        case 30:
-            totalField = 7
-            break;
-        case 35:
-            totalField = 8
-            break;
-        case 40:
-            totalField = 9
-            break;
-        default:
-            totalField = 0
-    }
-
+    const totalField = totalFieldFunc(total)
 
     Array.prototype.duplicates = function () {
         return this.filter(
@@ -60,19 +24,14 @@ module.exports = async (data) => {
         return `Os seguintes números estão repetidos: ${duplicados.map((n) => n)}`
     }
 
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     await page.goto('http://www.easybets.com.br/UniBetsPatos/seninhas.xhtml', { waitUntil: 'networkidle2' });
 
     await page.waitForSelector('table[id="j_idt81:campoQtd"]')
     const radioId = `label[for="j_idt81:campoQtd:${totalField}"]`
     await page.click(radioId, { clickCount: 1 })
-
-    for (let i = 0; i < numbers.length; i++) {
-        let number = 0
-        number = numbers[i] - 1
-        await page.click(`button[id="j_idt78:${number}:j_idt79"]`)
-    }
+    await numberClicks(total, page, numbers)
 
     await page.waitForSelector('input[name="j_idt81:campoJogador"]');
     await page.type('input[name="j_idt81:campoJogador"]', player)
@@ -82,21 +41,16 @@ module.exports = async (data) => {
     await page.type('input[name="j_idt81:campoQuina_input"]', value)
 
     await page.type('input[name="j_idt81:campoData_input"]', date)
-    //await page.click('button[id="j_idt81:salvar"]', { clickCount: 1 })
 
-    //await page.waitForXPath(`'td[contains(., "<a>${day}</a>")]'`).then(selector => selector.click())
+    await page.waitForTimeout(10000)
+    await page.click('span[class="ui-button-icon-left ui-icon ui-c fa fa-check"]', { clickCount: 1 })
+    await page.waitForTimeout(1000)
+    await page.waitForSelector('div[id="j_idt115"]', { visible: true })
+    await page.waitForTimeout(1000)
+    const element = await page.waitForSelector('#j_idt115 > div > div > form > center > div > div > div > div > h3', { visible: true }); // select the element
+    await page.waitForTimeout(1000)
+    const code = await element.evaluate(el => el.textContent)
 
-    //j_idt81:campoData_input
-    //j_idt81:campoQtd
-    //await page.waitForSelector('input[name="j_idt81:campoQtd"]');
-    /*const radioBtn = `'input[id=#j_idt81:campoQtd:${totalField}][value=N${total}]'`
-    await page.click(radioBtn)*/
-
-    await page.screenshot({ path: 'example.png' });
-
-    //await browser.close();
-    return 'ok'
+    await browser.close();
+    return code
 };
-
-//j_idt115_content
-//p-col-12 p-md-12 h3

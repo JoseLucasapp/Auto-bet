@@ -11,6 +11,14 @@ app.use(express.json())
 app.use(cors())
 app.use('/api', route)
 
+route.get('/', async (req, res) => {
+    try {
+        res.status(200).json('Home')
+    } catch (err) {
+        res.status(500).json({ error: err })
+    }
+})
+
 route.post('/new', async (req, res) => {
     try {
         const getGame = await pupFunc(req.body)

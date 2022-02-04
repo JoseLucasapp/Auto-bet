@@ -24,6 +24,7 @@ module.exports = async (data) => {
         return `Os seguintes números estão repetidos: ${duplicados.map((n) => n)}`
     }
 
+    //only to add buildpacks
     const browser = await puppeteer.launch({
         'args': [
             '--no-sandbox',

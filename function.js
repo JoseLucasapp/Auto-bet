@@ -1,14 +1,17 @@
 const puppeteer = require('puppeteer');
 const numberClicks = require('./numberClicks');
 const totalFieldFunc = require('./totalField');
+const checkNumbersLessThan10 = require('./checkNumbersLessThan10');
 
 module.exports = async (data) => {
-    const numbers = (data.numbers).split(' ')
+    const numbersArray = (data.numbers).split(' ')
     const player = data.player
     const total = parseInt(data.total)
     const value = data.value
     const date = data.date
+
     const totalField = totalFieldFunc(total)
+    const numbers = checkNumbersLessThan10(numbersArray)
 
     Array.prototype.duplicates = function () {
         return this.filter(
@@ -24,7 +27,6 @@ module.exports = async (data) => {
         return `Os seguintes números estão repetidos: ${duplicados.map((n) => n)}`
     }
 
-    //only to add buildpacks
     const browser = await puppeteer.launch({
         'args': [
             '--no-sandbox',
@@ -51,7 +53,13 @@ module.exports = async (data) => {
     await page.waitForTimeout(10000)
     await page.click('span[class="ui-button-icon-left ui-icon ui-c fa fa-check"]', { clickCount: 1 })
     await page.waitForTimeout(1000)
-    await page.waitForSelector('div[id="j_idt115"]', { visible: true })
+
+    const processError = await page.waitForSelector('#messages_container div > div > .ui-growl-title', { visible: true })
+    if (processError) {
+        return {
+            error: await processError.evaluate(el => el.textContent)
+        }
+    }
     await page.waitForTimeout(1000)
     const element = await page.waitForSelector('#j_idt115 > div > div > form > center > div > div > div > div > h3', { visible: true }); // select the element
     await page.waitForTimeout(1000)

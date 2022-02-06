@@ -22,6 +22,9 @@ route.get('/', async (req, res) => {
 route.post('/new', async (req, res) => {
     try {
         const getGame = await pupFunc(req.body)
+        if (getGame.error) {
+            res.status(400).json(getGame)
+        }
         res.status(200).json(getGame)
     } catch (err) {
         res.status(500).json({ error: err })

@@ -56,15 +56,18 @@ module.exports = async (data) => {
 
     const processError = await page.waitForSelector('#messages_container div > div > .ui-growl-title', { visible: true })
     if (processError) {
-        return {
-            error: await processError.evaluate(el => el.textContent)
+        const error = await processError.evaluate(el => el.textContent)
+        if (error === 'Registro adicionado com sucesso') {
+            const element = await page.waitForSelector('#j_idt115 > div > div > form > center > div > div > div > div > h3', { visible: true }); // select the element
+            const code = await element.evaluate(el => el.textContent)
+
+            await browser.close();
+            return code
+        } else {
+            await browser.close();
+            return {
+                error: error
+            }
         }
     }
-    await page.waitForTimeout(1000)
-    const element = await page.waitForSelector('#j_idt115 > div > div > form > center > div > div > div > div > h3', { visible: true }); // select the element
-    await page.waitForTimeout(1000)
-    const code = await element.evaluate(el => el.textContent)
-
-    await browser.close();
-    return code
 };

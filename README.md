@@ -14,6 +14,10 @@
   date: '02/03/2022'
 }</p><br/>
 
+<p>
+player: player's name, total: total numbers, value: bet value, numbers: numbers, date: date
+</p>
+
 <p>Result: { Código - WEHSINWE344 }</p>
 
 Used website: <a href="https://www.easybets.com.br/UniBetsPatos/seninhas.xhtml?r=64089">Easybets</a>

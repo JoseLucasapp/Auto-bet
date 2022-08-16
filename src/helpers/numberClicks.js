@@ -1,7 +1,6 @@
 module.exports = async (total, page, numbers) => {
     const number = numbers
     await page.evaluate(async (number) => {
-        console.log(number)
         const elements = [...document.querySelectorAll('div > div > div > div > div > div > div > div >div > table > tbody > tr > td > button > span')];
         if (number.includes('01')) {
             const targetElement = await elements.find(e => e.innerText === `01`)

@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
-const numberClicks = require('./numberClicks');
-const totalFieldFunc = require('./totalField');
-const checkNumbersLessThan10 = require('./checkNumbersLessThan10');
+const numberClicks = require('../helpers/numberClicks');
+const totalFieldFunc = require('../helpers/totalField');
+const checkNumbersLessThan10 = require('../helpers/checkNumbersLessThan10');
 
 module.exports = async (data) => {
     const numbersArray = (data.numbers).split(' ')
@@ -9,6 +9,7 @@ module.exports = async (data) => {
     const total = parseInt(data.total)
     const value = data.value
     const date = data.date
+    const websiteUrl = 'http://www.easybets.com.br/UniBetsPatos/seninhas.xhtml'
 
     const totalField = totalFieldFunc(total)
     const numbers = checkNumbersLessThan10(numbersArray)
@@ -34,7 +35,7 @@ module.exports = async (data) => {
         ]
     });
     const page = await browser.newPage();
-    await page.goto('http://www.easybets.com.br/UniBetsPatos/seninhas.xhtml', { waitUntil: 'networkidle2' });
+    await page.goto(websiteUrl, { waitUntil: 'networkidle2' });
 
     await page.waitForSelector('table[id="j_idt81:campoQtd"]')
     const radioId = `label[for="j_idt81:campoQtd:${totalField}"]`

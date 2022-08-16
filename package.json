@@ -6,8 +6,8 @@
   "author": "José Lucas <josluc2016@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node ./app.js",
-    "dev": "nodemon ./app.js"
+    "start": "node ./src/app.js",
+    "dev": "nodemon ./src/app.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

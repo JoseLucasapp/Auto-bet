@@ -55,6 +55,15 @@ module.exports = async (data) => {
     await page.click('span[class="ui-button-icon-left ui-icon ui-c fa fa-check"]', { clickCount: 1 })
     await page.waitForTimeout(1000)
 
+    //Testes
+    //await page.click('input[name="j_idt81:campoJogador"]', { clickCount: 1 })
+
+    /*
+    const datePanel = await page.waitForSelector('#j_idt81:campoData_panel', { visible: true })
+    if (datePanel) {
+        await page.evaluate(() => document.querySelector('#j_idt81:campoJogador').click());
+    }*/
+
     const processError = await page.waitForSelector('#messages_container div > div > .ui-growl-title', { visible: true })
     if (processError) {
         const error = await processError.evaluate(el => el.textContent)

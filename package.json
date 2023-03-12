@@ -7,12 +7,14 @@
   "license": "MIT",
   "scripts": {
     "start": "node ./src/app.js",
-    "dev": "nodemon ./src/app.js"
+    "dev": "nodemon -r esm ./src/app.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^14.3.2",
+    "esm": "^3.2.25",
     "express": "^4.17.2",
+    "pdfjs-dist": "^3.4.120",
     "puppeteer": "^13.1.2",
     "puppeteer-core": "^13.1.2"
   },

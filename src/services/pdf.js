@@ -13,11 +13,12 @@ async function getContent(src) {
     return await page.getTextContent()
 }
 
-async function getItems(src, len) {
-    const content = await getContent(src)
+module.exports = async (src, len) => {
+    const replacedTxt = "C:/Users/josel/Downloads/" + src
+    const content = await getContent(replacedTxt)
     let data = []
 
-    const items = content.items.map((item) => {
+    content.items.map((item) => {
         if (item.str * 1 > 0) {
             data.push({ id: item.id, num: item.str })
         }
@@ -28,9 +29,7 @@ async function getItems(src, len) {
         array.push(data.splice(0, len))
     }
 
-    const nums = array.map((v) => v.map((d) => d.num))
+    const nums = array.map((v) => v.map((d) => parseInt(d.num)))
 
     return nums
 }
-
-getItems('../pdf/m.pdf', 40)

@@ -1,5 +1,6 @@
 module.exports = async (total, page, numbers) => {
-    const number = numbers
+    const number = numbers.map(n => n.toString())
+
     await page.evaluate(async (number) => {
         const elements = [...document.querySelectorAll('div > div > div > div > div > div > div > div >div > table > tbody > tr > td > button > span')];
         if (number.includes('01')) {
